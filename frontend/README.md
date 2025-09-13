@@ -31,7 +31,7 @@ Una aplicación moderna de gestión de tareas construida con Vue 3, Pinia y Vite
 
 1. **Clonar el repositorio**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/CatrielNanthaveth/rocketbot_front.git
    cd rocketbot_front
    ```
 

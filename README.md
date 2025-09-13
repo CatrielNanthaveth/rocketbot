@@ -46,7 +46,7 @@ Una aplicación full-stack para la gestión de tareas desarrollada con Node.js/E
 
 ### 1. Clonar el repositorio
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/CatrielNanthaveth/rocketbot.git
 cd rocketbot
 ```
 
