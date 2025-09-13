@@ -2,6 +2,14 @@
 
 Una aplicación full-stack para la gestión de tareas desarrollada con Node.js/Express en el backend y Vue.js en el frontend.
 
+## 🔗 Enlaces Rápidos
+
+- **🌐 Aplicación en Vivo**: [https://rocketbot-front.vercel.app](https://rocketbot-front.vercel.app)
+- **🚀 API en Producción**: [https://rocketbot-api-832881849181.us-central1.run.app](https://rocketbot-api-832881849181.us-central1.run.app)
+- **📚 Documentación de la API**: [Ver sección API Endpoints](#-api-endpoints)
+- **🐳 Docker**: [Ver sección Docker](#-docker-y-despliegue)
+- **🧪 Testing**: [Ver sección Testing](#-testing)
+
 ## 🚀 Características
 
 - **Backend**: API REST con Node.js y Express
@@ -91,6 +99,51 @@ Crear un archivo `.env` en la carpeta `frontend`:
 VITE_API_URL=http://localhost:3000
 ```
 
+## 🐳 Docker y Despliegue
+
+### Backend con Docker
+
+El backend está containerizado y desplegado en Google Cloud Run:
+
+#### Construir la imagen Docker
+```bash
+cd backend
+docker build -t rocketbot-api .
+```
+
+#### Ejecutar localmente con Docker
+```bash
+docker run -p 3000:3000 rocketbot-api
+```
+
+#### Comandos Docker útiles
+```bash
+# Construir la imagen
+docker build -t rocketbot-api .
+
+# Ejecutar en modo interactivo
+docker run -it -p 3000:3000 rocketbot-api
+
+# Ejecutar en segundo plano
+docker run -d -p 3000:3000 --name rocketbot-container rocketbot-api
+
+# Ver logs del contenedor
+docker logs rocketbot-container
+
+# Detener el contenedor
+docker stop rocketbot-container
+
+# Eliminar el contenedor
+docker rm rocketbot-container
+```
+
+### Despliegue en Producción
+
+- **Frontend**: Desplegado en Vercel con integración automática desde GitHub
+- **Backend**: Containerizado con Docker y desplegado en Google Cloud Run
+- **Escalabilidad**: Cloud Run proporciona escalado automático basado en la demanda
+- **Alta Disponibilidad**: Servicios gestionados por Google Cloud Platform
+
 ## 🧪 Testing
 
 ### Backend
@@ -105,9 +158,19 @@ cd frontend
 npm run test:unit
 ```
 
+## 🌐 Aplicación en Producción
+
+### URLs de Despliegue
+- **Frontend**: [https://rocketbot-front.vercel.app](https://rocketbot-front.vercel.app)
+- **Backend API**: [https://rocketbot-api-832881849181.us-central1.run.app](https://rocketbot-api-832881849181.us-central1.run.app)
+
+### Docker
+El backend está containerizado con Docker y desplegado en Google Cloud Run para escalabilidad automática y alta disponibilidad.
+
 ## 📡 API Endpoints
 
-### Base URL: `http://localhost:3000`
+### Base URL Local: `http://localhost:3000`
+### Base URL Producción: `https://rocketbot-api-832881849181.us-central1.run.app`
 
 | Método | Endpoint | Descripción | Body |
 |--------|----------|-------------|------|
@@ -117,19 +180,116 @@ npm run test:unit
 | PUT | `/tasks/:id` | Actualizar tarea | `{ "title": "string", "category": "string" }` |
 | DELETE | `/tasks/:id` | Eliminar tarea | - |
 
+### Documentación Detallada de Endpoints
+
+#### 1. **GET /** - Información de la API
+Obtiene información básica sobre la API.
+
+**Respuesta:**
+```json
+{
+  "name": "rocketbot_challenge",
+  "author": "cnanthaveth",
+  "description": "technical challenge for rocketbot interview",
+  "version": "1.0.0"
+}
+```
+
+#### 2. **GET /tasks** - Obtener todas las tareas
+Retorna un array con todas las tareas existentes.
+
+**Respuesta:**
+```json
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "title": "Task 1",
+    "category": "Category 1"
+  }
+]
+```
+
+#### 3. **POST /tasks** - Crear una nueva tarea
+Crea una nueva tarea en el sistema.
+
+**Body (JSON):**
+```json
+{
+  "title": "Comprar leche",
+  "category": "Hogar"
+}
+```
+
+**Respuesta (201 Created):**
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "title": "Comprar leche",
+  "category": "Hogar"
+}
+```
+
+#### 4. **PUT /tasks/:id** - Actualizar una tarea existente
+Actualiza una tarea existente por su ID.
+
+**Parámetros:**
+- `id` (string): ID único de la tarea
+
+**Body (JSON):**
+```json
+{
+  "title": "Título actualizado",
+  "category": "Categoría actualizada"
+}
+```
+
+**Respuesta (200 OK):**
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "title": "Título actualizado",
+  "category": "Categoría actualizada"
+}
+```
+
+#### 5. **DELETE /tasks/:id** - Eliminar una tarea
+Elimina una tarea del sistema por su ID.
+
+**Parámetros:**
+- `id` (string): ID único de la tarea
+
+**Respuesta (200 OK):**
+```json
+{
+  "message": "Task 550e8400-e29b-41d4-a716-446655440000 deleted successfully"
+}
+```
+
+### Códigos de Estado HTTP
+
+| Código | Descripción |
+|--------|-------------|
+| 200 | OK - Operación exitosa |
+| 201 | Created - Recurso creado exitosamente |
+| 400 | Bad Request - Error en la petición |
+| 404 | Not Found - Recurso no encontrado |
+| 500 | Internal Server Error - Error interno del servidor |
+
 ## 🔧 Ejemplos de Requests
 
-### 1. Obtener información de la API
+### Local Development
+
+#### 1. Obtener información de la API
 ```bash
 curl -X GET http://localhost:3000/
 ```
 
-### 2. Obtener todas las tareas
+#### 2. Obtener todas las tareas
 ```bash
 curl -X GET http://localhost:3000/tasks
 ```
 
-### 3. Crear una nueva tarea
+#### 3. Crear una nueva tarea
 ```bash
 curl -X POST http://localhost:3000/tasks \
   -H "Content-Type: application/json" \
@@ -139,7 +299,7 @@ curl -X POST http://localhost:3000/tasks \
   }'
 ```
 
-### 4. Actualizar una tarea
+#### 4. Actualizar una tarea
 ```bash
 curl -X PUT http://localhost:3000/tasks/{id} \
   -H "Content-Type: application/json" \
@@ -149,13 +309,51 @@ curl -X PUT http://localhost:3000/tasks/{id} \
   }'
 ```
 
-### 5. Eliminar una tarea
+#### 5. Eliminar una tarea
 ```bash
 curl -X DELETE http://localhost:3000/tasks/{id}
 ```
 
+### Producción
+
+#### 1. Obtener información de la API
+```bash
+curl -X GET https://rocketbot-api-832881849181.us-central1.run.app/
+```
+
+#### 2. Obtener todas las tareas
+```bash
+curl -X GET https://rocketbot-api-832881849181.us-central1.run.app/tasks
+```
+
+#### 3. Crear una nueva tarea
+```bash
+curl -X POST https://rocketbot-api-832881849181.us-central1.run.app/tasks \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Completar documentación",
+    "category": "Desarrollo"
+  }'
+```
+
+#### 4. Actualizar una tarea
+```bash
+curl -X PUT https://rocketbot-api-832881849181.us-central1.run.app/tasks/{id} \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Documentación actualizada",
+    "category": "Documentación"
+  }'
+```
+
+#### 5. Eliminar una tarea
+```bash
+curl -X DELETE https://rocketbot-api-832881849181.us-central1.run.app/tasks/{id}
+```
+
 ### Ejemplos con Postman
 
+#### Local Development
 1. **GET** `http://localhost:3000/tasks`
 2. **POST** `http://localhost:3000/tasks`
    - Headers: `Content-Type: application/json`
@@ -176,6 +374,28 @@ curl -X DELETE http://localhost:3000/tasks/{id}
      }
      ```
 4. **DELETE** `http://localhost:3000/tasks/{id}`
+
+#### Producción
+1. **GET** `https://rocketbot-api-832881849181.us-central1.run.app/tasks`
+2. **POST** `https://rocketbot-api-832881849181.us-central1.run.app/tasks`
+   - Headers: `Content-Type: application/json`
+   - Body (raw JSON):
+     ```json
+     {
+       "title": "Nueva tarea",
+       "category": "Categoría"
+     }
+     ```
+3. **PUT** `https://rocketbot-api-832881849181.us-central1.run.app/tasks/{id}`
+   - Headers: `Content-Type: application/json`
+   - Body (raw JSON):
+     ```json
+     {
+       "title": "Tarea actualizada",
+       "category": "Nueva categoría"
+     }
+     ```
+4. **DELETE** `https://rocketbot-api-832881849181.us-central1.run.app/tasks/{id}`
 
 ## 🏪 Gestión de Estado con Pinia
 
@@ -287,6 +507,26 @@ rocketbot/
 
 ---
 
+## ⚡ Características Técnicas
+
+### Backend
+- **IDs Únicos**: Utiliza UUIDs generados con `crypto.randomUUID()`
+- **Validación**: Manejo robusto de errores y respuestas apropiadas
+- **Logging**: Registro de peticiones HTTP con Morgan
+- **CORS**: Habilitado para permitir peticiones desde diferentes orígenes
+- **Testing**: Cobertura completa de pruebas con Jest y Supertest
+- **Containerización**: Docker para despliegue consistente
+- **Escalabilidad**: Desplegado en Google Cloud Run
+
+### Frontend
+- **Composition API**: Vue.js 3 con sintaxis moderna
+- **Estado Global**: Pinia para gestión de estado reactiva
+- **Validación en Tiempo Real**: Sistema de validación robusto
+- **Responsive Design**: Adaptable a todos los dispositivos
+- **Testing**: Vitest para pruebas unitarias
+- **Build Optimizado**: Vite para desarrollo y build rápidos
+- **Despliegue Automático**: Integración con Vercel
+
 ## 🎯 Posibles mejoras
 
 - [ ] Autenticación de usuarios
@@ -296,6 +536,9 @@ rocketbot/
 - [ ] Drag & drop para reordenar tareas
 - [ ] Notificaciones push
 - [ ] Modo oscuro
+- [ ] Estados para las tareas (done, in progress, etc)
+- [ ] Timestamps y fechas límite
+- [ ] Mejoras en las respuestas de la API
 
 ---
 
